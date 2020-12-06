@@ -1,0 +1,48 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6B38AB8D-1800-40DF-93E9-D7F1B416596B}</ProjectGuid>
+    </PropertyGroup>
+    <ItemGroup>
+        <Projects Include="ClientDSRestWin\ClientDSRestWin.dproj">
+            <Dependencies/>
+        </Projects>
+        <Projects Include="ClientCustomWin\D260\ClientCustomWin.dproj">
+            <Dependencies/>
+        </Projects>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Default.Personality.12</Borland.Personality>
+        <Borland.ProjectType/>
+        <BorlandProject>
+            <Default.Personality/>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Target Name="ClientDSRestWin">
+        <MSBuild Projects="ClientDSRestWin\ClientDSRestWin.dproj"/>
+    </Target>
+    <Target Name="ClientDSRestWin:Clean">
+        <MSBuild Projects="ClientDSRestWin\ClientDSRestWin.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ClientDSRestWin:Make">
+        <MSBuild Projects="ClientDSRestWin\ClientDSRestWin.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="ClientCustomWin">
+        <MSBuild Projects="ClientCustomWin\D260\ClientCustomWin.dproj"/>
+    </Target>
+    <Target Name="ClientCustomWin:Clean">
+        <MSBuild Projects="ClientCustomWin\D260\ClientCustomWin.dproj" Targets="Clean"/>
+    </Target>
+    <Target Name="ClientCustomWin:Make">
+        <MSBuild Projects="ClientCustomWin\D260\ClientCustomWin.dproj" Targets="Make"/>
+    </Target>
+    <Target Name="Build">
+        <CallTarget Targets="ClientDSRestWin;ClientCustomWin"/>
+    </Target>
+    <Target Name="Clean">
+        <CallTarget Targets="ClientDSRestWin:Clean;ClientCustomWin:Clean"/>
+    </Target>
+    <Target Name="Make">
+        <CallTarget Targets="ClientDSRestWin:Make;ClientCustomWin:Make"/>
+    </Target>
+    <Import Project="$(BDS)\Bin\CodeGear.Group.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Group.Targets')"/>
+</Project>
