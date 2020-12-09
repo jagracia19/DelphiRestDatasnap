@@ -20,6 +20,7 @@ object FormMain: TFormMain
     Height = 74
     Align = alTop
     TabOrder = 0
+    ExplicitTop = -6
     object EditParam: TEdit
       Left = 8
       Top = 8
@@ -36,6 +37,15 @@ object FormMain: TFormMain
       Caption = 'Manual'
       TabOrder = 1
       OnClick = ButtonManualClick
+    end
+    object ButtonDataSet: TButton
+      Left = 89
+      Top = 35
+      Width = 75
+      Height = 25
+      Caption = 'DataSet'
+      TabOrder = 2
+      OnClick = ButtonDataSetClick
     end
   end
   object Memo1: TMemo

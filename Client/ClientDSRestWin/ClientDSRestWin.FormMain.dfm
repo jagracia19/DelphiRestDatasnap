@@ -37,6 +37,15 @@ object FormMain: TFormMain
       TabOrder = 1
       OnClick = ButtonManualClick
     end
+    object ButtonDataSet: TButton
+      Left = 89
+      Top = 35
+      Width = 75
+      Height = 25
+      Caption = 'DataSet'
+      TabOrder = 2
+      OnClick = ButtonDataSetClick
+    end
   end
   object Memo1: TMemo
     Left = 0
