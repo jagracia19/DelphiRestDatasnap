@@ -7,9 +7,17 @@ uses
   Vcl.Forms,
   Web.WebReq,
   IdHTTPWebBrokerBridge,
-  ServWinGui.FormMain in 'ServWinGui.FormMain.pas' {Form1},
+  SQLUtils.Classes in 'Library\SQLUtils\SQLUtils.Classes.pas',
+  Server.Common in 'Server.Common.pas',
+  Server.Logger in 'Server.Logger.pas',
+  Server.Config in 'Server.Config.pas',
+  Server.EntityService in 'Server.EntityService.pas' {DataModuleEntity: TDataModule},
+  Swip.ClientesService in 'Swip\Swip.ClientesService.pas' {DataModuleClientes: TDataModule},
+  Swip.PuestosService in 'Swip\Swip.PuestosService.pas' {DataModulePuestos: TDataModule},
+  Swip.CapturasService in 'Swip\Swip.CapturasService.pas' {DataModuleCapturas: TDataModule},
   ServerMethodsUnit1 in 'ServerMethodsUnit1.pas',
-  Server.WebModule in 'Server.WebModule.pas' {WebModule1: TWebModule};
+  Server.WebModule in 'Server.WebModule.pas' {WebModule1: TWebModule},
+  ServWinGui.FormMain in 'ServWinGui.FormMain.pas' {FormMain};
 
 {$R *.res}
 

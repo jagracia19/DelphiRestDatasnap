@@ -1,0 +1,2 @@
+inherited DataModuleClientes: TDataModuleClientes
+end

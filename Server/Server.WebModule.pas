@@ -15,14 +15,24 @@ type
   TWebModule1 = class(TWebModule)
     DSHTTPWebDispatcher1: TDSHTTPWebDispatcher;
     DSServer1: TDSServer;
+   DSAuthenticationManager1: TDSAuthenticationManager;
     DSServerClass1: TDSServerClass;
     ServerFunctionInvoker: TPageProducer;
     ReverseString: TPageProducer;
     WebFileDispatcher1: TWebFileDispatcher;
     DSProxyGenerator1: TDSProxyGenerator;
     DSServerMetaDataProvider1: TDSServerMetaDataProvider;
+    DSServerClassEntity: TDSServerClass;
+    DSServerClassClientes: TDSServerClass;
+    DSServerClassPuestos: TDSServerClass;
+    DSServerClassCapturas: TDSServerClass;
     procedure DSServerClass1GetClass(DSServerClass: TDSServerClass;
       var PersistentClass: TPersistentClass);
+    procedure DSAuthenticationManager1UserAuthorize(Sender: TObject;
+      EventObject: TDSAuthorizeEventObject; var valid: Boolean);
+    procedure DSAuthenticationManager1UserAuthenticate(Sender: TObject;
+      const Protocol, Context, User, Password: string; var valid: Boolean;
+      UserRoles: TStrings);
     procedure ServerFunctionInvokerHTMLTag(Sender: TObject; Tag: TTag;
       const TagString: string; TagParams: TStrings; var ReplaceText: string);
     procedure WebModuleDefaultAction(Sender: TObject;
@@ -33,12 +43,18 @@ type
       const AFileName: string; Request: TWebRequest; Response: TWebResponse;
       var Handled: Boolean);
     procedure WebModuleCreate(Sender: TObject);
+    procedure DSServerClassEntityGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure DSServerClassClientesGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure DSServerClassPuestosGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
+    procedure DSServerClassCapturasGetClass(DSServerClass: TDSServerClass;
+      var PersistentClass: TPersistentClass);
   private
-    { Private declarations }
     FServerFunctionInvokerAction: TWebActionItem;
     function AllowServerFunctionInvoker: Boolean;
   public
-    { Public declarations }
   end;
 
 var
@@ -52,12 +68,55 @@ implementation
 
 uses
   ServerMethodsUnit1,
+  Server.EntityService,
+  Swip.ClientesService,
+  Swip.PuestosService,
+  Swip.CapturasService,
   Web.WebReq;
 
 procedure TWebModule1.DSServerClass1GetClass(
   DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
 begin
   PersistentClass := ServerMethodsUnit1.TServerMethods1;
+end;
+
+procedure TWebModule1.DSServerClassCapturasGetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := Swip.CapturasService.TDataModuleCapturas;
+end;
+
+procedure TWebModule1.DSServerClassClientesGetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := Swip.ClientesService.TDataModuleClientes;
+end;
+
+procedure TWebModule1.DSAuthenticationManager1UserAuthenticate(
+  Sender: TObject; const Protocol, Context, User, Password: string;
+  var valid: Boolean; UserRoles: TStrings);
+begin
+  valid := True;
+//  valid := SameText(User, 'admin') and SameStr(Password, 'SSWadmin');
+end;
+
+procedure TWebModule1.DSAuthenticationManager1UserAuthorize(
+  Sender: TObject; EventObject: TDSAuthorizeEventObject; 
+  var valid: Boolean);
+begin
+  valid := True;
+end;
+
+procedure TWebModule1.DSServerClassEntityGetClass(DSServerClass: TDSServerClass;
+  var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := Server.EntityService.TDataModuleEntity;
+end;
+
+procedure TWebModule1.DSServerClassPuestosGetClass(
+  DSServerClass: TDSServerClass; var PersistentClass: TPersistentClass);
+begin
+  PersistentClass := Swip.PuestosService.TDataModulePuestos;
 end;
 
 procedure TWebModule1.ServerFunctionInvokerHTMLTag(Sender: TObject; Tag: TTag;

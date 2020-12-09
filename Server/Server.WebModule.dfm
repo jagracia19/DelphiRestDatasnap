@@ -20,7 +20,7 @@ object WebModule1: TWebModule1
     end>
   BeforeDispatch = WebModuleBeforeDispatch
   Height = 572
-  Width = 631
+  Width = 1016
   object DSServer1: TDSServer
     Left = 96
     Top = 11
@@ -28,8 +28,16 @@ object WebModule1: TWebModule1
   object DSHTTPWebDispatcher1: TDSHTTPWebDispatcher
     Server = DSServer1
     Filters = <>
+    AuthenticationManager = DSAuthenticationManager1
     WebDispatch.PathInfo = 'datasnap*'
     Left = 96
+    Top = 99
+  end
+  object DSAuthenticationManager1: TDSAuthenticationManager
+    OnUserAuthenticate = DSAuthenticationManager1UserAuthenticate
+    OnUserAuthorize = DSAuthenticationManager1UserAuthorize
+    Roles = <>
+    Left = 240
     Top = 99
   end
   object DSServerClass1: TDSServerClass
@@ -102,5 +110,29 @@ object WebModule1: TWebModule1
     Server = DSServer1
     Left = 248
     Top = 352
+  end
+  object DSServerClassEntity: TDSServerClass
+    OnGetClass = DSServerClassEntityGetClass
+    Server = DSServer1
+    Left = 304
+    Top = 11
+  end
+  object DSServerClassClientes: TDSServerClass
+    OnGetClass = DSServerClassClientesGetClass
+    Server = DSServer1
+    Left = 480
+    Top = 11
+  end
+  object DSServerClassPuestos: TDSServerClass
+    OnGetClass = DSServerClassPuestosGetClass
+    Server = DSServer1
+    Left = 616
+    Top = 11
+  end
+  object DSServerClassCapturas: TDSServerClass
+    OnGetClass = DSServerClassCapturasGetClass
+    Server = DSServer1
+    Left = 736
+    Top = 11
   end
 end
