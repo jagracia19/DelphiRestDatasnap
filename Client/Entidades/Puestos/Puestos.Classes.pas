@@ -4,7 +4,11 @@ interface
 
 uses
   Entity.Classes,
+  {$IF CompilerVersion < 33.0}
+  SysUtils;
+  {$ELSE}
   System.SysUtils;
+  {$IFEND}
 
 type
   TPuesto = class(TDatabaseEntity)

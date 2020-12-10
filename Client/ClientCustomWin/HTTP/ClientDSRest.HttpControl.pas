@@ -3,7 +3,11 @@ unit ClientDSRest.HttpControl;
 interface
 
 uses
-  System.JSON, System.Generics.Collections;
+  {$IF CompilerVersion < 33.0}
+  Generics.Collections, DBXJSON;
+  {$ELSE}
+  System.Generics.Collections, System.JSON;
+  {$IFEND}
 
 type
   TClientDSRestHttpControl = class
@@ -13,6 +17,11 @@ type
   end;
 
 implementation
+
+{$IF CompilerVersion < 33.0}
+uses
+  JSON.Helper;
+{$IFEND}
 
 { TClientDSRestHttpControl }
 

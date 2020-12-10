@@ -6,7 +6,7 @@ uses
   IdBaseComponent, IdComponent, IdTCPConnection, IdTCPClient, IdHTTP,
   DBXJSON,
   Windows, Messages, SysUtils, Variants, Classes, Graphics, Controls, Forms,
-  Dialogs, StdCtrls, ExtCtrls;
+  Dialogs, StdCtrls, ExtCtrls, Generics.Collections;
 
 type
   TFormMain = class(TForm)
@@ -15,7 +15,9 @@ type
     Panel1: TPanel;
     EditParam: TEdit;
     ButtonManual: TButton;
+    ButtonDataSet: TButton;
     procedure ButtonManualClick(Sender: TObject);
+    procedure ButtonDataSetClick(Sender: TObject);
   private
   public
   end;
@@ -26,13 +28,64 @@ var
 implementation
 
 uses
+  Clientes.Classes,
+  Clientes.Json,
+  Puestos.Classes,
+  Puestos.Json,
+  Capturas.Classes,
+  Capturas.Json,
+  Entity.Classes,
+  Entity.Json,
+  ClientDSRest.HttpControl,
   ClientCustomWin.JsonParser;
 
 {$R *.dfm}
 
 const
-  SERVER_URL = 'http://172.26.0.19:8080';
-  METHOD_URL = '/datasnap/rest/TServerMethods1/ReverseString/';
+  SERVER_URL        = 'http://172.26.0.19:8080';
+  PATH_DS_REST      = '/datasnap/rest';
+  METHOD_REVERSE    = '/TServerMethods1/ReverseString/';
+  METHOD_CLIENTES   = '/TDataModuleClientes/LeerTodo';
+
+procedure TFormMain.ButtonDataSetClick(Sender: TObject);
+
+  procedure ParseLeerTodo(AJsonValue: TJSONValue;
+    AEntityClass: TDatabaseEntityClass; AJsonClass: TDatabaseEntityJsonClass);
+  var list: TList<TDatabaseEntity>;
+      item: TDatabaseEntity;
+  begin
+    list := TObjectList<TDatabaseEntity>.Create;
+    try
+      if AJsonValue is TJSONArray then
+        AJsonClass.Parse(TJSONArray(AJsonValue), list);
+      for item in list do
+        Memo1.Lines.Add(item.ToString);
+    finally
+      list.Free;
+    end;
+  end;
+
+var jsonValue   : TJSONValue;
+    stResult    : string;
+    stError     : string;
+begin
+  Memo1.Lines.Add('Clientes:');
+  stResult := IdHTTP1.Get(SERVER_URL + PATH_DS_REST + METHOD_CLIENTES);
+  Memo1.Lines.Add(stResult);
+
+  jsonValue := nil;
+  try
+    // string to JSON value
+    jsonValue := TClientDSRestHttpControl.ParseJsonResult(stResult, stError);
+
+    // parse JSON
+    if jsonValue <> nil then
+      ParseLeerTodo(jsonValue, TCliente, TClienteJson);
+  finally
+    if jsonValue <> nil then
+      jsonValue.Free;
+  end;
+end;
 
 procedure TFormMain.ButtonManualClick(Sender: TObject);
 var stParam   : string;
@@ -40,8 +93,7 @@ var stParam   : string;
 begin
   // Http Get
   stParam := EditParam.Text;
-
-  stResult := IdHTTP1.Get(SERVER_URL + METHOD_URL + stParam);
+  stResult := IdHTTP1.Get(SERVER_URL + PATH_DS_REST + METHOD_REVERSE + stParam);
   Memo1.Lines.Add(stResult);
 
   // Parser JSON  ej: {"result":["aloH"]}

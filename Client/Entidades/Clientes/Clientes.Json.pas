@@ -23,6 +23,9 @@ type
 implementation
 
 uses
+  {$IF CompilerVersion < 33.0}
+  JSON.Helper,
+  {$IFEND}
   Clientes.Classes;
 
 { TClienteJson }
