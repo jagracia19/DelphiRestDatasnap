@@ -4,6 +4,7 @@ interface
 
 uses
   SQLUtils.Classes,
+  System.JSON,
   System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
   FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.Phys.FB,
@@ -30,7 +31,7 @@ type
     procedure IniciarEntidad; virtual; abstract;
     property Entidad: TSQLEntity read FEntidad;
   public
-    function LeerTodo: TDataSet;
+    function LeerTodo: TJSONValue;
     property NombreTabla: string read GetNombreTabla write SetNombreTabla;
     property ClavePrimaria: string read GetClavePrimaria write SetClavePrimaria;
   end;
@@ -42,6 +43,7 @@ var
 implementation
 
 uses
+  JSONAuto.Utils,
   Server.Logger,
   Server.Config;
 
@@ -85,13 +87,13 @@ begin
   Result := Entidad.TableName;
 end;
 
-function TDataModuleEntity.LeerTodo: TDataSet;
+function TDataModuleEntity.LeerTodo: TJSONValue;
 var sql: string;
 begin
   Log.Log(ClassName + '.ReadAll');
   sql := TSQLSelect.Select(Entidad);
   Query.Open(sql);
-  Result := Query;
+  Result := TJSONDataSet.ReadAllRows(Query);
 end;
 
 procedure TDataModuleEntity.SetClavePrimaria(const Value: string);

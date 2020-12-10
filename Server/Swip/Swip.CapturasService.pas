@@ -3,6 +3,7 @@ unit Swip.CapturasService;
 interface
 
 uses
+  System.JSON,
   System.SysUtils, System.Classes, Server.EntityService, FireDAC.Stan.Intf,
   FireDAC.Stan.Option, FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf,
   FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
@@ -17,7 +18,7 @@ type
   protected
     procedure IniciarEntidad; override;
   public
-    function LeerPendiente: TDataSet;
+    function LeerPendiente: TJSONValue;
   end;
 {$METHODINFO OFF}
 
@@ -28,6 +29,7 @@ implementation
 
 uses
   SQLUtils.Classes,
+  JSONAuto.Utils,
   Server.Logger;
 
 {%CLASSGROUP 'Vcl.Controls.TControl'}
@@ -43,13 +45,13 @@ begin
   ClavePrimaria := 'ID_CAPTURA';
 end;
 
-function TDataModuleCapturas.LeerPendiente: TDataSet;
+function TDataModuleCapturas.LeerPendiente: TJSONValue;
 var sql: string;
 begin
   Log.Log(ClassName + '.ReadAllPendiente');
   sql := TSQLSelect.Select(Entidad, '(procesada=0)');
   Query.Open(sql);
-  Result := Query;
+  Result := TJSONDataSet.ReadAllRows(Query);
 end;
 
 end.

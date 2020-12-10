@@ -102,7 +102,8 @@ $(PostBuildEvent)]]></PostBuildEvent>
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
-        <DCCReference Include="Library\SQLUtils\SQLUtils.Classes.pas"/>
+        <DCCReference Include="..\Library\SQLUtils\SQLUtils.Classes.pas"/>
+        <DCCReference Include="..\Library\JSONAuto\JSONAuto.Utils.pas"/>
         <DCCReference Include="Server.Common.pas"/>
         <DCCReference Include="Server.Logger.pas"/>
         <DCCReference Include="Server.Config.pas"/>
@@ -183,10 +184,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
                 </Excluded_Packages>
             </Delphi.Personality>
             <Deployment Version="3">
-                <DeployFile LocalName="js\base64.js" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="images\collapse.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
-                        <RemoteDir>.\js\</RemoteDir>
-                        <RemoteName>base64.js</RemoteName>
+                        <RemoteDir>.\images\</RemoteDir>
+                        <RemoteName>collapse.png</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -253,12 +254,6 @@ $(PostBuildEvent)]]></PostBuildEvent>
                     <Platform Name="Win64">
                         <RemoteDir>.\css\</RemoteDir>
                         <RemoteName>main.css</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
-                <DeployFile LocalName="js\serverfunctioninvoker.js" Configuration="Debug" Class="ProjectFile">
-                    <Platform Name="Win32">
-                        <RemoteDir>.\js\</RemoteDir>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
@@ -268,6 +263,12 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
+                <DeployFile LocalName="js\serverfunctioninvoker.js" Configuration="Debug" Class="ProjectFile">
+                    <Platform Name="Win32">
+                        <RemoteDir>.\js\</RemoteDir>
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
                 <DeployFile LocalName="images\expand.png" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
                         <RemoteDir>.\images\</RemoteDir>
@@ -641,10 +642,10 @@ $(PostBuildEvent)]]></PostBuildEvent>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="images\collapse.png" Configuration="Debug" Class="ProjectFile">
+                <DeployFile LocalName="js\base64.js" Configuration="Debug" Class="ProjectFile">
                     <Platform Name="Win64">
-                        <RemoteDir>.\images\</RemoteDir>
-                        <RemoteName>collapse.png</RemoteName>
+                        <RemoteDir>.\js\</RemoteDir>
+                        <RemoteName>base64.js</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
