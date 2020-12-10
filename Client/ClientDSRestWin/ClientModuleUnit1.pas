@@ -12,8 +12,12 @@ type
     FInstanceOwner: Boolean;
     FServerMethods1Client: TServerMethods1Client;
     FDataModuleClientesClient: TDataModuleClientesClient;
+    FDataModulePuestosClient: TDataModulePuestosClient;
+    FDataModuleCapturasClient: TDataModuleCapturasClient;
     function GetServerMethods1Client: TServerMethods1Client;
     function GetDataModuleClientesClient: TDataModuleClientesClient;
+    function GetDataModulePuestosClient: TDataModulePuestosClient;
+    function GetDataModuleCapturasClient: TDataModuleCapturasClient;
   public
     constructor Create(AOwner: TComponent); override;
     destructor Destroy; override;
@@ -22,6 +26,10 @@ type
       write FServerMethods1Client;
     property DataModuleClientesClient: TDataModuleClientesClient
       read GetDataModuleClientesClient write FDataModuleClientesClient;
+    property DataModulePuestosClient: TDataModulePuestosClient
+      read GetDataModulePuestosClient write FDataModulePuestosClient;
+    property DataModuleCapturasClient: TDataModuleCapturasClient
+      read GetDataModuleCapturasClient write FDataModuleCapturasClient;
   end;
 
 var
@@ -45,7 +53,18 @@ begin
     FServerMethods1Client.Free;
   if FDataModuleClientesClient <> nil then
     FDataModuleClientesClient.Free;
+  if FDataModulePuestosClient <> nil then
+    FDataModulePuestosClient.Free;
+  if FDataModuleCapturasClient <> nil then
+    FDataModuleCapturasClient.Free;
   inherited;
+end;
+
+function TClientModule1.GetDataModuleCapturasClient: TDataModuleCapturasClient;
+begin
+  if FDataModuleCapturasClient = nil then
+    FDataModuleCapturasClient := TDataModuleCapturasClient.Create(DSRestConnection1, FInstanceOwner);
+  Result := FDataModuleCapturasClient;
 end;
 
 function TClientModule1.GetDataModuleClientesClient: TDataModuleClientesClient;
@@ -53,6 +72,13 @@ begin
   if FDataModuleClientesClient = nil then
     FDataModuleClientesClient := TDataModuleClientesClient.Create(DSRestConnection1, FInstanceOwner);
   Result := FDataModuleClientesClient;
+end;
+
+function TClientModule1.GetDataModulePuestosClient: TDataModulePuestosClient;
+begin
+  if FDataModulePuestosClient = nil then
+    FDataModulePuestosClient := TDataModulePuestosClient.Create(DSRestConnection1, FInstanceOwner);
+  Result := FDataModulePuestosClient;
 end;
 
 function TClientModule1.GetServerMethods1Client: TServerMethods1Client;

@@ -1,6 +1,6 @@
 //
 // Created by the DataSnap proxy generator.
-// 09/12/2020 11:27:26
+// 10/12/2020 8:06:32
 //
 
 unit ClientClassesUnit1;
@@ -42,8 +42,8 @@ type
     destructor Destroy; override;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    function LeerTodo(const ARequestFilter: string = ''): TDataSet;
-    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LeerTodo(const ARequestFilter: string = ''): TJSONValue;
+    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONValue;
   end;
 
   TDataModuleClientesClient = class(TDSAdminRestClient)
@@ -58,8 +58,8 @@ type
     destructor Destroy; override;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    function LeerTodo(const ARequestFilter: string = ''): TDataSet;
-    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LeerTodo(const ARequestFilter: string = ''): TJSONValue;
+    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONValue;
   end;
 
   TDataModulePuestosClient = class(TDSAdminRestClient)
@@ -74,8 +74,8 @@ type
     destructor Destroy; override;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    function LeerTodo(const ARequestFilter: string = ''): TDataSet;
-    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LeerTodo(const ARequestFilter: string = ''): TJSONValue;
+    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONValue;
   end;
 
   TDataModuleCapturasClient = class(TDSAdminRestClient)
@@ -90,12 +90,12 @@ type
     constructor Create(ARestConnection: TDSRestConnection); overload;
     constructor Create(ARestConnection: TDSRestConnection; AInstanceOwner: Boolean); overload;
     destructor Destroy; override;
-    function LeerPendiente(const ARequestFilter: string = ''): TDataSet;
-    function LeerPendiente_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LeerPendiente(const ARequestFilter: string = ''): TJSONValue;
+    function LeerPendiente_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONValue;
     procedure DataModuleCreate(Sender: TObject);
     procedure DataModuleDestroy(Sender: TObject);
-    function LeerTodo(const ARequestFilter: string = ''): TDataSet;
-    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedDataSet;
+    function LeerTodo(const ARequestFilter: string = ''): TJSONValue;
+    function LeerTodo_Cache(const ARequestFilter: string = ''): IDSRestCachedJSONValue;
   end;
 
 const
@@ -148,7 +148,7 @@ const
 
   TDataModuleEntity_LeerTodo: array [0..0] of TDSRestParameterMetaData =
   (
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONValue')
   );
 
   TDataModuleEntity_LeerTodo_Cache: array [0..0] of TDSRestParameterMetaData =
@@ -168,7 +168,7 @@ const
 
   TDataModuleClientes_LeerTodo: array [0..0] of TDSRestParameterMetaData =
   (
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONValue')
   );
 
   TDataModuleClientes_LeerTodo_Cache: array [0..0] of TDSRestParameterMetaData =
@@ -188,7 +188,7 @@ const
 
   TDataModulePuestos_LeerTodo: array [0..0] of TDSRestParameterMetaData =
   (
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONValue')
   );
 
   TDataModulePuestos_LeerTodo_Cache: array [0..0] of TDSRestParameterMetaData =
@@ -198,7 +198,7 @@ const
 
   TDataModuleCapturas_LeerPendiente: array [0..0] of TDSRestParameterMetaData =
   (
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONValue')
   );
 
   TDataModuleCapturas_LeerPendiente_Cache: array [0..0] of TDSRestParameterMetaData =
@@ -218,7 +218,7 @@ const
 
   TDataModuleCapturas_LeerTodo: array [0..0] of TDSRestParameterMetaData =
   (
-    (Name: ''; Direction: 4; DBXType: 23; TypeName: 'TDataSet')
+    (Name: ''; Direction: 4; DBXType: 37; TypeName: 'TJSONValue')
   );
 
   TDataModuleCapturas_LeerTodo_Cache: array [0..0] of TDSRestParameterMetaData =
@@ -384,7 +384,7 @@ begin
   FDataModuleDestroyCommand.Execute;
 end;
 
-function TDataModuleEntityClient.LeerTodo(const ARequestFilter: string): TDataSet;
+function TDataModuleEntityClient.LeerTodo(const ARequestFilter: string): TJSONValue;
 begin
   if FLeerTodoCommand = nil then
   begin
@@ -394,13 +394,10 @@ begin
     FLeerTodoCommand.Prepare(TDataModuleEntity_LeerTodo);
   end;
   FLeerTodoCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLeerTodoCommand.Parameters[0].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLeerTodoCommand.FreeOnExecute(Result);
+  Result := TJSONValue(FLeerTodoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TDataModuleEntityClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+function TDataModuleEntityClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedJSONValue;
 begin
   if FLeerTodoCommand_Cache = nil then
   begin
@@ -410,7 +407,7 @@ begin
     FLeerTodoCommand_Cache.Prepare(TDataModuleEntity_LeerTodo_Cache);
   end;
   FLeerTodoCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
+  Result := TDSRestCachedJSONValue.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
 end;
 
 constructor TDataModuleEntityClient.Create(ARestConnection: TDSRestConnection);
@@ -482,7 +479,7 @@ begin
   FDataModuleDestroyCommand.Execute;
 end;
 
-function TDataModuleClientesClient.LeerTodo(const ARequestFilter: string): TDataSet;
+function TDataModuleClientesClient.LeerTodo(const ARequestFilter: string): TJSONValue;
 begin
   if FLeerTodoCommand = nil then
   begin
@@ -492,13 +489,10 @@ begin
     FLeerTodoCommand.Prepare(TDataModuleClientes_LeerTodo);
   end;
   FLeerTodoCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLeerTodoCommand.Parameters[0].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLeerTodoCommand.FreeOnExecute(Result);
+  Result := TJSONValue(FLeerTodoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TDataModuleClientesClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+function TDataModuleClientesClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedJSONValue;
 begin
   if FLeerTodoCommand_Cache = nil then
   begin
@@ -508,7 +502,7 @@ begin
     FLeerTodoCommand_Cache.Prepare(TDataModuleClientes_LeerTodo_Cache);
   end;
   FLeerTodoCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
+  Result := TDSRestCachedJSONValue.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
 end;
 
 constructor TDataModuleClientesClient.Create(ARestConnection: TDSRestConnection);
@@ -580,7 +574,7 @@ begin
   FDataModuleDestroyCommand.Execute;
 end;
 
-function TDataModulePuestosClient.LeerTodo(const ARequestFilter: string): TDataSet;
+function TDataModulePuestosClient.LeerTodo(const ARequestFilter: string): TJSONValue;
 begin
   if FLeerTodoCommand = nil then
   begin
@@ -590,13 +584,10 @@ begin
     FLeerTodoCommand.Prepare(TDataModulePuestos_LeerTodo);
   end;
   FLeerTodoCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLeerTodoCommand.Parameters[0].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLeerTodoCommand.FreeOnExecute(Result);
+  Result := TJSONValue(FLeerTodoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TDataModulePuestosClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+function TDataModulePuestosClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedJSONValue;
 begin
   if FLeerTodoCommand_Cache = nil then
   begin
@@ -606,7 +597,7 @@ begin
     FLeerTodoCommand_Cache.Prepare(TDataModulePuestos_LeerTodo_Cache);
   end;
   FLeerTodoCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
+  Result := TDSRestCachedJSONValue.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
 end;
 
 constructor TDataModulePuestosClient.Create(ARestConnection: TDSRestConnection);
@@ -628,7 +619,7 @@ begin
   inherited;
 end;
 
-function TDataModuleCapturasClient.LeerPendiente(const ARequestFilter: string): TDataSet;
+function TDataModuleCapturasClient.LeerPendiente(const ARequestFilter: string): TJSONValue;
 begin
   if FLeerPendienteCommand = nil then
   begin
@@ -638,13 +629,10 @@ begin
     FLeerPendienteCommand.Prepare(TDataModuleCapturas_LeerPendiente);
   end;
   FLeerPendienteCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLeerPendienteCommand.Parameters[0].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLeerPendienteCommand.FreeOnExecute(Result);
+  Result := TJSONValue(FLeerPendienteCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TDataModuleCapturasClient.LeerPendiente_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+function TDataModuleCapturasClient.LeerPendiente_Cache(const ARequestFilter: string): IDSRestCachedJSONValue;
 begin
   if FLeerPendienteCommand_Cache = nil then
   begin
@@ -654,7 +642,7 @@ begin
     FLeerPendienteCommand_Cache.Prepare(TDataModuleCapturas_LeerPendiente_Cache);
   end;
   FLeerPendienteCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLeerPendienteCommand_Cache.Parameters[0].Value.GetString);
+  Result := TDSRestCachedJSONValue.Create(FLeerPendienteCommand_Cache.Parameters[0].Value.GetString);
 end;
 
 procedure TDataModuleCapturasClient.DataModuleCreate(Sender: TObject);
@@ -707,7 +695,7 @@ begin
   FDataModuleDestroyCommand.Execute;
 end;
 
-function TDataModuleCapturasClient.LeerTodo(const ARequestFilter: string): TDataSet;
+function TDataModuleCapturasClient.LeerTodo(const ARequestFilter: string): TJSONValue;
 begin
   if FLeerTodoCommand = nil then
   begin
@@ -717,13 +705,10 @@ begin
     FLeerTodoCommand.Prepare(TDataModuleCapturas_LeerTodo);
   end;
   FLeerTodoCommand.Execute(ARequestFilter);
-  Result := TCustomSQLDataSet.Create(nil, FLeerTodoCommand.Parameters[0].Value.GetDBXReader(False), True);
-  Result.Open;
-  if FInstanceOwner then
-    FLeerTodoCommand.FreeOnExecute(Result);
+  Result := TJSONValue(FLeerTodoCommand.Parameters[0].Value.GetJSONValue(FInstanceOwner));
 end;
 
-function TDataModuleCapturasClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedDataSet;
+function TDataModuleCapturasClient.LeerTodo_Cache(const ARequestFilter: string): IDSRestCachedJSONValue;
 begin
   if FLeerTodoCommand_Cache = nil then
   begin
@@ -733,7 +718,7 @@ begin
     FLeerTodoCommand_Cache.Prepare(TDataModuleCapturas_LeerTodo_Cache);
   end;
   FLeerTodoCommand_Cache.ExecuteCache(ARequestFilter);
-  Result := TDSRestCachedDataSet.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
+  Result := TDSRestCachedJSONValue.Create(FLeerTodoCommand_Cache.Parameters[0].Value.GetString);
 end;
 
 constructor TDataModuleCapturasClient.Create(ARestConnection: TDSRestConnection);

@@ -6,7 +6,7 @@ uses
   Winapi.Windows, Winapi.Messages,
   System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
   Vcl.Controls, Vcl.Forms, Vcl.Dialogs, Vcl.StdCtrls, Vcl.ExtCtrls,
-  Data.Db;
+  System.JSON, System.Generics.Collections;
 
 type
   TFormMain = class(TForm)
@@ -27,24 +27,52 @@ var
 implementation
 
 uses
+  Clientes.Classes,
+  Clientes.Json,
+  Puestos.Classes,
+  Puestos.Json,
+  Capturas.Classes,
+  Capturas.Json,
+  Entity.Classes,
+  Entity.Json,
   ClientModuleUnit1;
 
 {$R *.dfm}
 
 procedure TFormMain.ButtonDataSetClick(Sender: TObject);
-var dataset: TDataSet;
-begin
-  dataset := ClientModule1.DataModuleClientesClient.LeerTodo;
-  dataset.Active := True;
-  dataset.First;
-  while not dataset.Eof do
+
+  procedure ParseLeerTodo(AJsonValue: TJSONValue;
+    AEntityClass: TDatabaseEntityClass; AJsonClass: TDatabaseEntityJsonClass);
+  var list: TList<TDatabaseEntity>;
+      item: TDatabaseEntity;
   begin
-    Memo1.Lines.Add(Format('%d: %s',
-        [dataset.FieldByName('id_cliente').AsInteger,
-         dataset.FieldByName('nombre').AsString]));
-    dataset.Next;
+    list := TObjectList<TDatabaseEntity>.Create;
+    try
+      if AJsonValue is TJSONArray then
+        AJsonClass.Parse(TJSONArray(AJsonValue), list);
+      for item in list do
+        Memo1.Lines.Add(item.ToString);
+    finally
+      list.Free;
+    end;
   end;
-  dataset.Active := False;
+
+var jsonValue : TJSONValue;
+begin
+  Memo1.Lines.Add('Clientes:');
+  jsonValue := ClientModule1.DataModuleClientesClient.LeerTodo;
+  Memo1.Lines.Add(jsonValue.ToString);
+  ParseLeerTodo(jsonValue, TCliente, TClienteJson);
+
+  Memo1.Lines.Add('Puestos:');
+  jsonValue := ClientModule1.DataModulePuestosClient.LeerTodo;
+  Memo1.Lines.Add(jsonValue.ToString);
+  ParseLeerTodo(jsonValue, TPuesto, TPuestoJson);
+
+  Memo1.Lines.Add('Capturas:');
+  jsonValue := ClientModule1.DataModuleCapturasClient.LeerTodo;
+  Memo1.Lines.Add(jsonValue.ToString);
+  ParseLeerTodo(jsonValue, TCaptura, TCapturaJson);
 end;
 
 procedure TFormMain.ButtonManualClick(Sender: TObject);

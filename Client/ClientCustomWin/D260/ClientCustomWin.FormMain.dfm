@@ -20,7 +20,6 @@ object FormMain: TFormMain
     Height = 74
     Align = alTop
     TabOrder = 0
-    ExplicitTop = -6
     object EditParam: TEdit
       Left = 8
       Top = 8

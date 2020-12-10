@@ -98,11 +98,20 @@
         <DelphiCompile Include="$(MainSource)">
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
+        <DCCReference Include="..\..\..\Library\JSONAuto\JSONAuto.Utils.pas"/>
+        <DCCReference Include="..\..\Entidades\Entity.Classes.pas"/>
+        <DCCReference Include="..\..\Entidades\Entity.Json.pas"/>
+        <DCCReference Include="..\..\Entidades\Clientes\Clientes.Classes.pas"/>
+        <DCCReference Include="..\..\Entidades\Clientes\Clientes.Json.pas"/>
+        <DCCReference Include="..\..\Entidades\Puestos\Puestos.Classes.pas"/>
+        <DCCReference Include="..\..\Entidades\Puestos\Puestos.Json.pas"/>
+        <DCCReference Include="..\..\Entidades\Capturas\Capturas.Classes.pas"/>
+        <DCCReference Include="..\..\Entidades\Capturas\Capturas.Json.pas"/>
+        <DCCReference Include="..\HTTP\ClientDSRest.HttpControl.pas"/>
+        <DCCReference Include="..\JSON\ClientCustomWin.JsonParser.pas"/>
         <DCCReference Include="ClientCustomWin.FormMain.pas">
             <Form>FormMain</Form>
-            <FormType>dfm</FormType>
         </DCCReference>
-        <DCCReference Include="..\JSON\ClientCustomWin.JsonParser.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
