@@ -54,6 +54,24 @@ object FormMain: TFormMain
       TabOrder = 2
       OnClick = ButtonDataSetClick
     end
+    object ButtonHttpGet: TButton
+      Left = 170
+      Top = 35
+      Width = 75
+      Height = 25
+      Caption = 'Http Get'
+      TabOrder = 3
+      OnClick = ButtonHttpGetClick
+    end
+    object ButtonSwipCapturas: TButton
+      Left = 251
+      Top = 35
+      Width = 75
+      Height = 25
+      Caption = 'Swip Capturas'
+      TabOrder = 4
+      OnClick = ButtonSwipCapturasClick
+    end
   end
   object IdHTTP1: TIdHTTP
     AllowCookies = True

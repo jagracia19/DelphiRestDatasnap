@@ -12,6 +12,7 @@ uses
   Capturas.Classes in '..\..\Entidades\Capturas\Capturas.Classes.pas',
   Capturas.Json in '..\..\Entidades\Capturas\Capturas.Json.pas',
   ClientDSRest.HttpControl in '..\HTTP\ClientDSRest.HttpControl.pas',
+  Swip.HttpControl in '..\..\Swip\Swip.HttpControl.pas',
   JSON.Helper in 'JSON\JSON.Helper.pas',
   ClientCustomWin.JsonParser in '..\JSON\ClientCustomWin.JsonParser.pas',
   ClientCustomWin.FormMain in 'ClientCustomWin.FormMain.pas' {FormMain};
